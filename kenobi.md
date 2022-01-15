@@ -69,7 +69,7 @@ Notable finds:
  - port 21 proFTPD server version 1.3.5
 --------------------------------------------------------------------------------------------------
 
-Enumerating samba:
+Enumerating smb shares:
 
 Ran smb enumeration scan with nmap
  - nmap -p 445 --script=smb-enum-shares.nse,smb-enum-users.nse 10.10.66.72
