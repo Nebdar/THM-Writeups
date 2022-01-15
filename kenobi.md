@@ -1,8 +1,8 @@
 <pre>
 Ran service discovery scan
-- nmap -Pn -A -sV -Sc -F
+- nmap -Pn -A -sV -Sc -F 10.10.66.72
 
-Results:
+Scan Results:
 
 PORT     STATE SERVICE     VERSION
 21/tcp   open  ftp         ProFTPD 1.3.5
@@ -63,7 +63,7 @@ Host script results:
 |_  start_date: N/A
 
 
-Noteable finds:
+Notable finds:
  - port 111 rpcbind
  - port 445 samba service
  - port 21 proFTPD server version 1.3.5
@@ -103,7 +103,7 @@ Host script results:
 |    Current user access: <none>
 |_______________________________________________________________________
 
-Noteable finds:
+Notable finds:
  - user kenobi
  - user anonymous
 
@@ -174,5 +174,5 @@ Creating a shell to gain root
 
  When /usr/bin/menu is run it uses our path to find the 'curl' binary,
  because the menu binary runs as root so does our shell gaining root access.
---------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 </pre>
